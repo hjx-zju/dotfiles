@@ -3,15 +3,14 @@ local M = {}
 
 -- Path to overriding theme and highlights files
 local highlights = require "custom.highlights"
-
+local status=require "custom.configs.status"
 M.ui = {
-  theme = "bearded-arc",
-  theme_toggle = { "bearded-arc", "one_light" },
+  theme = "doomchad",
+  theme_toggle = { "doomchad", "one_light" },
 
   hl_override = highlights.override,
   hl_add = highlights.add,
 }
-
 M.plugins = "custom.plugins"
 
 -- check core.mappings for table structure
