@@ -67,10 +67,15 @@ M.copilot = {
   -- Possible configurable fields can be found on:
   -- https://github.com/zbirenbaum/copilot.lua#setup-and-configuration
   suggestion = {
-    enable = false,
+    enable = true,
+    auto_trigger = true,
+    keymap={
+      accept="<C-e>",
+    }
+    -- accept_word="<>", 
   },
   panel = {
-    enable = false,
+    enable = true,
   },
 }
 return M

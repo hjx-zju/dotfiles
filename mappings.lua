@@ -13,12 +13,7 @@ M.general = {
     ["<C-z>"]={ "<ESC>ui", "undo" },
     ["<C-s>"]={"<ESC>:w<CR>i","save"},
     ["<C-v>"]={"<ESC>pi","paste"},
-    -- echo hello workspaceFolders
-     
-  
-
-    
-    
+    -- echo hello
   }
 }
 -- M.copilot={
