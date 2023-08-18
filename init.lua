@@ -5,10 +5,10 @@
 --   command = "tabdo wincmd =",
 -- })local
 
--- vim.g.copilot_no_tab_map = true
--- vim.g.copilot_assume_mapped=true
--- vim.api.nvim_set_keymap('i', '<C-tab>', 'copilot#Accept("<CR>")', {silent = true,expr=true})
--- map hello world to silent
 -- 
+-- local npairs = require'nvim-autopairs'
+-- local Rule = require'nvim-autopairs.rule'
+-- local cond = require 'nvim-autopairs.conds'
+-- npairs.add_rule(Rule("<",">","lua"))
 -- 
 

@@ -62,20 +62,69 @@ M.nvimtree = {
     },
   },
 }
+M.cmp={
+    mapping = {
+      ["<C-e>"]=require("cmp").config.disable,
+      ["<C-p>"]=require("cmp").config.disable,
+      ["<Tab>"] = require("cmp").mapping(function(fallback)
+        local cmp=require("cmp")
+        if require("copilot.suggestion").is_visible() then
+           require("copilot.suggestion").accept()
+        elseif   cmp.visible() then
+          cmp.select_next_item()
+        elseif require("luasnip").expand_or_jumpable() then
+          vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+        else
+        fallback()
+        end
+       end, {
+        "i",
+      "s",
+     }),
+      -- use Up and down for cycling completion
+      ["<Down>"] = require("cmp").mapping(function(fallback)
+        local cmp = require "cmp"
+        if cmp.visible() then
+          cmp.select_next_item()
+        elseif require("luasnip").expand_or_jumpable() then
+          vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+        else
+          fallback()
+        end
+      end, {
+        "i",
+        "s",
+      }),
+      ["<Up>"] = require("cmp").mapping(function(fallback)
+        local cmp = require "cmp"
+        if cmp.visible() then
+          cmp.select_prev_item()
+        elseif require("luasnip").jumpable(-1) then
+          vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+        else
+          fallback()
+        end
+      end, {
+        "i",
+        "s",
+      }),
+    },
+  }
 
-M.copilot = {
-  -- Possible configurable fields can be found on:
-  -- https://github.com/zbirenbaum/copilot.lua#setup-and-configuration
-  suggestion = {
-    enable = true,
-    auto_trigger = true,
-    keymap={
-      accept="<C-e>",
-    }
-    -- accept_word="<>", 
-  },
-  panel = {
-    enable = true,
-  },
-}
+--
+-- M.copilot = {
+--   -- Possible configurable fields can be found on:
+--   -- https://github.com/zbirenbaum/copilot.lua#setup-and-configuration
+--   suggestion = {
+--     enable = true,
+--     auto_trigger = true,
+--     keymap={
+--       accept="<C-e>",
+--     }
+--     -- accept_word="<>", 
+--   },
+--   panel = {
+--     enable = true,
+--   },
+-- }
 return M

@@ -47,7 +47,7 @@ local plugins = {
     end,
   },
 
-    {
+  {
     "zbirenbaum/copilot.lua",
     cmd="Copilot",
     event="VimEnter",
@@ -59,14 +59,16 @@ local plugins = {
         keymap={
         accept="<C-q>",
         accept_word="<C-Right>",
+        accept_line="<C-Down>",
         }
     -- accept_word="<>", 
         },
         panel = {
         enable = true,
         },
+        copilot_node_command=vim.fn.expand("$HOME") .. "/.nvm/versions/node/v16.3.0/bin/node",
 
-      })
+     })
     end,
     -- opts = overrides.copilot,
     -- echo hello
@@ -75,39 +77,59 @@ local plugins = {
   },
   {
     "hrsh7th/nvim-cmp",
-    opts = {
-      mapping = {
-
-        -- use Up and down for cycling completion
-        ["<Down>"] = require("cmp").mapping(function(fallback)
-          local cmp = require "cmp"
-          if cmp.visible() then
-            cmp.select_next_item()
-          elseif require("luasnip").expand_or_jumpable() then
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
-          else
-            fallback()
-          end
-        end, {
-          "i",
-          "s",
-        }),
-        ["<Up>"] = require("cmp").mapping(function(fallback)
-          local cmp = require "cmp"
-          if cmp.visible() then
-            cmp.select_prev_item()
-          elseif require("luasnip").jumpable(-1) then
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
-          else
-            fallback()
-          end
-        end, {
-          "i",
-          "s",
-        }),
+    dependencies = {
+      {
+        "windwp/nvim-autopairs",
+        -- opts = {
+        --   fast_wrap = {},
+        --   disable_filetype = { "TelescopePrompt", "vim" },
+        -- },
+        config = function(_, opts)
+          require("nvim-autopairs").setup(opts)
+          local aps=require("nvim-autopairs")
+          local Rule=require("nvim-autopairs.rule")
+          aps.add_rules({
+            Rule("<",">","lua"),})
+          -- setup cmp for autopairs
+          local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+          require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
+        end,
       },
+
     },
-  }
+    opts = overrides.cmp
+  },
+  {
+    "dstein64/nvim-scrollview",
+    event="VimEnter",
+    config = function()
+      require("scrollview").setup({
+        excluded_filetypes = {"NvimTree","help", "terminal", "dashboard"},
+        current_only = true,
+        signs_on_startup = {'conflicts','search',},
+        winblend = 30,
+
+      })
+    end,
+    },
+    
+  --   {
+  --     "windwp/nvim-autopairs",
+  --      config=function()
+  --         local aps=require("nvim-autopairs")
+  --         local Rule=require("nvim-autopairs.rule")
+  --         aps.add_rules({
+  --           Rule("<",">","lua"),})
+  --         end,
+  -- }
+  -- {
+  --   "Xuyuanp/scrollbar.nvim",
+  --   config = function()
+  --     require("scrollbar").setup()
+  --   end,
+  --   lazy = false,
+  --
+  --   }
   -- To make a plugin not be loaded
   -- {
   --   "NvChad/nvim-colorizer.lua",
